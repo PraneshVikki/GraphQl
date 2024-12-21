@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const mongooseSchema = mongoose.Schema({
     _id:{type:Number},
-    book:{type:String},
-    gener:{type:String},
+    name:{type:String},
+    genre:{type:String},
     authorId:{type:Number},
 
 })
