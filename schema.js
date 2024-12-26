@@ -29,8 +29,9 @@ const BookType = new GraphQLObjectType({
         authorId:{type:GraphQLInt},
         author:{
             type:AuthorType,
-            resolve(parent,args){
-                return Author.find({_id:parent.authorId});
+            async resolve (parent,args){
+                const a = await Author.find({_id:parent.authorId});
+                return a[0];
             }
         }
     })
@@ -43,19 +44,26 @@ const BookQuery = new GraphQLObjectType({
         books:{
             type: BookType,
             args:{_id:{type:GraphQLID}},
-            resolve(parent,args){                
-                const a = Book.find({_id:args._id});
-                console.log(a._id)
-                return a
+            async resolve(parent,args){                
+                const a = await Book.find({_id:args._id});
+                return a[0];
             }
         },
         author:{
             type: AuthorType,
             args:{_id:{type:GraphQLID}},
             resolve(parent,args){
-                return Author.find({_id:parent._id});
+                const a = Author.find({_id:parent._id});
+                return a[0];
             }
         },
+        allBooks:{
+            type: new GraphQLList(BookType),
+            resolve(parent,args){
+                return Book.find({});
+            }
+        },
+
     }
 })
 
